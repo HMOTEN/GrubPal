@@ -41,7 +41,6 @@
 	margin-right:auto;
 	text-align: center;
 	font-family: 'Nunito', sans-serif;
-	background-color: white;
 	
 }
 .notLoggedInDiv {
@@ -58,6 +57,7 @@
 #logoutButtonDiv{
 	padding-top: 40px;
 	padding-bottom: 40px;
+	background-color: white;
 
 }
 #welcomeHeading{
