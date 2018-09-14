@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<link href="https://fonts.googleapis.com/css?family=Nunito:300" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+<link rel="stylesheet" href="index.css">
+<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyA-Q7KYhL1ii54Hddm32t_UEO9SO8C8K9E",
+    authDomain: "grubpal-1a353.firebaseapp.com",
+    databaseURL: "https://grubpal-1a353.firebaseio.com",
+    projectId: "grubpal-1a353",
+    storageBucket: "grubpal-1a353.appspot.com",
+    messagingSenderId: "768913252058"
+  };
+  firebase.initializeApp(config);
+</script>
+<link rel="stylesheet" href="./material.min.css">
+<script src="./material.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<title>GrubPal</title>
+<body>
+
+
+<div id = "notLoggedInDiv" class = "notLoggedInDiv">
+	
+	<div id = "loginCard" class="demo-card-square mdl-card mdl-shadow--2dp" >
+		<h2 id = "welcomeHeading">GrubPal</h2>
+		<div id = "nameOfUser" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+			<input class="mdl-textfield__input" type="text" id="addNameText">
+			<label id="addNameTextLabel" class="mdl-textfield__label" for="addNameText">What's Your Name</label>
+		</div>	
+		<div id = "groupUser" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+			<input class="mdl-textfield__input" type="text" id="addGroupUserNameText">
+			<label id="addGroupUserNameTextLabel" class="mdl-textfield__label" for="addGroupUserNameText">Group UserName</label>
+		</div>
+		<div id = "groupPassword" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+			<input class="mdl-textfield__input" type="password" id="addGroupPasswordText">
+			<label id="addGroupPasswordTextLabel" class="mdl-textfield__label" for="addGroupPasswordText">Password</label>
+		</div>
+		<div class="mdl-card__actions">
+			<button id = "logginButton" onclick = "login(addGroupUserNameText.value)" class="mdl-button mdl-js-button mdl-js-ripple-effect"><t style = "text-transform: capitalize;">Find a GrubPal</t></button>		
+		</div>
+	</div>
+</div>
+<div id = "loggedInDiv" class = "loggedInDiv" >
+	<h1 id = "logo">GrubPal <p  id="date"></p> </h1>
+	<h1 id = "welcomeHeading">Welcome <t id = "passedName"> </t></h1>
+	<div class = "addUserStyle">
+		<table id = "tableResturant">
+			<tbody id = "table_bodyResturant">
+		
+			</tbody>
+		</table>
+	</div> 
+
+
+	<div>
+		<form action="#">
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<input class="mdl-textfield__input" type="text" id="addResturantText">
+				<label id="addResturantTextLabel" class="mdl-textfield__label" for="addResturantText">Add Resturant...</label>
+				<div  style="float: right;"><button id ="submitResturantButton" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" id = "addResturantSubmitBtn" onclick = "submitResturant()" ><i class="material-icons">add</i></button></div>
+			</div>
+		</form>
+		
+	</div>
+
+		
+	<table id = "userTable" class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" id = "userTable">
+		<thread>
+			<tr>
+				<td class="mdl-data-table__cell--non-numeric">Name</td>
+				<td class="mdl-data-table__cell--non-numeric">Resturant Preference</td>
+				<td class="mdl-data-table__cell--non-numeric"></td>
+			</tr>
+		</thread>
+		<tbody id = "table_body">
+		
+		</tbody>
+	</table>
+	<div id = "logoutButtonDiv">
+		<button id = "logoutButton" onclick = "logout()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"><t style = "text-transform: capitalize;">Log Out</t></button>
+	</div>
+</div>
+
+<script src = "index.js">
+
+</script>
+
+
+
+</body>
+
+
+
+
+
+
+</html>
