@@ -28,15 +28,15 @@
 	<div id = "loginCard" class="demo-card-square mdl-card mdl-shadow--2dp" >
 		<h2 id = "welcomeHeading">GrubPal</h2>
 		<div id = "nameOfUser" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			<input class="mdl-textfield__input" type="text" id="addNameText">
+			<input class="mdl-textfield__input" type="text" id="addNameText" required>
 			<label id="addNameTextLabel" class="mdl-textfield__label" for="addNameText">What's Your Name</label>
 		</div>	
 		<div id = "groupUser" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			<input class="mdl-textfield__input" type="text" id="addGroupUserNameText">
+			<input class="mdl-textfield__input" type="text" id="addGroupUserNameText" required>
 			<label id="addGroupUserNameTextLabel" class="mdl-textfield__label" for="addGroupUserNameText">Group UserName</label>
 		</div>
 		<div id = "groupPassword" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			<input class="mdl-textfield__input" type="password" id="addGroupPasswordText">
+			<input class="mdl-textfield__input" type="password" id="addGroupPasswordText" required>
 			<label id="addGroupPasswordTextLabel" class="mdl-textfield__label" for="addGroupPasswordText">Password</label>
 		</div>
 		<div class="mdl-card__actions">
@@ -69,13 +69,13 @@
 
 		
 	<table id = "userTable" class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" id = "userTable">
-		<div>
+		<thread>
 			<tr>
 				<td class="mdl-data-table__cell--non-numeric">Name</td>
 				<td class="mdl-data-table__cell--non-numeric">Resturant Preference</td>
 				<td class="mdl-data-table__cell--non-numeric"></td>
 			</tr>
-		</div>
+		</thread>
 		<tbody id = "table_body">
 		
 		</tbody>
