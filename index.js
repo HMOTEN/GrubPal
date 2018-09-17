@@ -227,7 +227,7 @@ usersRefSub.on('child_added', function(data) {
 	{
 		if( emailDB == userEmail)
 		{
-			table_body").append("<tr><td class='mdl-data-table__cell--non-numeric'>" + nameDB + "</td><td class='mdl-data-table__cell--non-numeric'>" + resturantNameDB + "</td><td><button class='mdl-button mdl-js-button mdl-button--icon' onClick = removeData('"+nameDB+"')><i class='material-icons'>delete_forever</i></button></td></tr>");
+			$("#table_body").append("<tr><td class='mdl-data-table__cell--non-numeric'>" + nameDB + "</td><td class='mdl-data-table__cell--non-numeric'>" + resturantNameDB + "</td><td><button class='mdl-button mdl-js-button mdl-button--icon' onClick = removeData('"+nameDB+"')><i class='material-icons'>delete_forever</i></button></td></tr>");
 		}
 	}
 	else
