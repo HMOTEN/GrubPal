@@ -1,8 +1,4 @@
-{
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
+
 .resturantBtn {
 	border: none;
 	outline: none;
@@ -41,6 +37,7 @@
 	margin-right:auto;
 	text-align: center;
 	font-family: 'Nunito', sans-serif;
+
 	
 }
 .notLoggedInDiv {

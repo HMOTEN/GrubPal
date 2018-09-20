@@ -3,8 +3,6 @@ var addNameText = document.getElementById("addNameText");
 var addPersonSubmitBtn = document.getElementById("addPersonSubmitBtn");
 var addResturantText = document.getElementById("addResturantText");
 var addResturantSubmitBtn = document.getElementById("addResturantSubmitBtn");
-var usersRef = firebase.database().ref("user");
-var resturantsRef = firebase.database().ref("resturant");
 var resturantSelectionByUser = null;
 n =  new Date();
 y = n.getFullYear();
@@ -13,6 +11,7 @@ d = n.getDate();
 var todaysDate = m + "/" + d + "/" + y;
 document.getElementById("date").innerHTML = todaysDate;
 var groupUserEmail = "";
+var userNameAuth = document.getElementById("addGroupUserNameText");
 
 
 
@@ -22,12 +21,24 @@ if (sessionStorage.getItem("autosaveNameText")) {
   // Restore the contents of the text addNameText
   addNameText.value = sessionStorage.getItem("autosaveNameText");
   document.getElementById("passedName").innerHTML = addNameText.value;
+
+}
+
+if (sessionStorage.getItem("autosaveUserNameAuth")) {
+  
+  userNameAuth.value = sessionStorage.getItem("autosaveUserNameAuth");
+
 }
  
 // Listen for changes in addNameText
 addNameText.addEventListener("change", function() {
   // And save the results into the session storage object
   sessionStorage.setItem("autosaveNameText", addNameText.value);
+});
+
+userNameAuth.addEventListener("change", function() {
+  // And save the results into the session storage object
+  sessionStorage.setItem("autosaveUserNameAuth", userNameAuth.value);
 });
 
 //checks if logged in
@@ -47,19 +58,12 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 //add a person to web app
 function submitPerson(userResturantSelection){
-	
 	var nameText = addNameText.value;	
-	var user = firebase.auth().currentUser;
-	var userEmail ="";
-	if (user != null) {
-		userEmail = user.email;
-	}
-	
+	usersRef = firebase.database().ref().child(document.getElementById("addGroupUserNameText").value +"/user/")
 	usersRef.child(nameText).set({
 		name: nameText,
 		resturantName: userResturantSelection,
-		date: todaysDate,
-		email: userEmail
+		date: todaysDate
 		
 	});
 	
@@ -67,17 +71,10 @@ function submitPerson(userResturantSelection){
 
 //add a resturant to web app
 function submitResturant(){
-	
 	var resturantText = addResturantText.value;	
-	var user = firebase.auth().currentUser;
-	var userEmail ="";
-	if (user != null) {
-		userEmail = user.email;
-	}
-	
+	var resturantsRef = firebase.database().ref().child(document.getElementById("addGroupUserNameText").value+"/resturant/");
 	resturantsRef.child(resturantText).set({
-		name: resturantText,
-		email: userEmail
+		name: resturantText
 	});
 	
 }
@@ -92,7 +89,7 @@ function saveResturantSelection(element) {
 
 function removeData(nameToBeDeleted) {
     
-	firebase.database().ref().child("user/"+nameToBeDeleted+"/").remove();
+	firebase.database().ref().child(document.getElementById("addGroupUserNameText").value +"/user/"+nameToBeDeleted+"/").remove();
 	var indexOfDataToRemove = getRow(nameToBeDeleted);
 	if(indexOfDataToRemove != -1)
 	{
@@ -137,15 +134,15 @@ function getEmail(userNamePassed){
 
 
 function login(userNamePassed){
-	
-	
+
+	userNameAuth = userNamePassed;
 	var groupPassword = addGroupPasswordText.value;
 	var ref = firebase.database().ref().child("login");
 	ref.orderByChild("userName").equalTo(userNamePassed).once("value").then( function(snapshot) {
 		var userData = snapshot.val();
 		if(userData)
 		{
-			
+			glb = snapshot.val();
 			snapshot.forEach(function (childSnapshot) {
 
 				var value = childSnapshot.val();
@@ -157,11 +154,17 @@ function login(userNamePassed){
 		// Handle Errors here.
 		var errorCode = error.code;
 		var errorMessage = error.message;
-	
 		window.alert("Either the password or groupusername is incorrect");
 		// ...
 	});
 		document.getElementById("passedName").innerHTML = addNameText.value;
+		var user = firebase.auth().currentUser;
+		var userEmail ="";
+		var userUid = "";
+		if (user != null) {
+			userEmail = user.email;
+			userUid = user.uid;
+		}
 	});
 
 	
@@ -182,53 +185,43 @@ function logout(){
 
 
 //retives all the resturant from DB when they are added
-var resturantsRefSub = firebase.database().ref().child("resturant");
+
+var resturantsRefSub = firebase.database().ref().child(document.getElementById("addGroupUserNameText").value+"/resturant/");
 var counter = 0;
 resturantsRefSub.on('child_added', function(data) {
 	
 	var resturantNameDB = data.child("name").val();
 	var emailDB = data.child("email").val();
-	var user = firebase.auth().currentUser;
-	var userEmail ="";
-	if (user != null) {
-		userEmail = user.email;
-	}
-	if(userEmail == emailDB)
+
+	if(counter == 2)
 	{
-		if(counter == 2)
-		{
-			counter = 0;
-			$("#table_bodyResturant").append("<td><button class = 'mdl-chip' id='resturantRow' value=" + "'"+resturantNameDB+"'" + " onclick=" + "saveResturantSelection(this)" +"><span class='mdl-chip__text'>"+resturantNameDB+"</span></button></td>");
-			$("#table_bodyResturant").append("<tr></tr>");
-		}
-		else
-		{
-			$("#table_bodyResturant").append("<td><button class = 'mdl-chip' id='resturantRow'  value=" + "'"+resturantNameDB+"'" + " onclick=" + "saveResturantSelection(this)" +"><span class='mdl-chip__text'>"+resturantNameDB+"</span></button></td>");
-			counter++;
-		}
-		addResturantText.value = "";
+		counter = 0;
+		$("#table_bodyResturant").append("<td><button class = 'mdl-chip' id='resturantRow' value=" + "'"+resturantNameDB+"'" + " onclick=" + "saveResturantSelection(this)" +"><span class='mdl-chip__text'>"+resturantNameDB+"</span></button></td>");
+		$("#table_bodyResturant").append("<tr></tr>");
 	}
+	else
+	{
+		$("#table_bodyResturant").append("<td><button class = 'mdl-chip' id='resturantRow'  value=" + "'"+resturantNameDB+"'" + " onclick=" + "saveResturantSelection(this)" +"><span class='mdl-chip__text'>"+resturantNameDB+"</span></button></td>");
+		counter++;
+	}
+	addResturantText.value = "";
+
 });
 
 //retrives all the people from DB when they are added
-var usersRefSub = firebase.database().ref().child("user");
+
+var usersRefSub = firebase.database().ref().child(document.getElementById("addGroupUserNameText").value+"/user");
 usersRefSub.on('child_added', function(data) {
   
 	var nameDB = data.child("name").val();
 	var dateDB = data.child("date").val();
 	var resturantNameDB = data.child("resturantName").val();
 	var emailDB = data.child("email").val();
-	var user = firebase.auth().currentUser;
-	var userEmail ="";
-	if (user != null) {
-		userEmail = user.email;
-	}
-	if(dateDB == todaysDate )
+	if(dateDB == todaysDate)
 	{
-		if( emailDB == userEmail)
-		{
-			$("#table_body").append("<tr><td class='mdl-data-table__cell--non-numeric'>" + nameDB + "</td><td class='mdl-data-table__cell--non-numeric'>" + resturantNameDB + "</td><td><button class='mdl-button mdl-js-button mdl-button--icon' onClick = removeData('"+nameDB+"')><i class='material-icons'>delete_forever</i></button></td></tr>");
-		}
+		
+		$("#table_body").append("<tr><td class='mdl-data-table__cell--non-numeric'>" + nameDB + "</td><td class='mdl-data-table__cell--non-numeric'>" + resturantNameDB + "</td><td><button class='mdl-button mdl-js-button mdl-button--icon' onClick = removeData('"+nameDB+"')><i class='material-icons'>delete_forever</i></button></td></tr>");
+	
 	}
 	else
 	{
@@ -238,8 +231,10 @@ usersRefSub.on('child_added', function(data) {
 
 
 //listens when person is updated
+
+var usersRefSub = firebase.database().ref().child(document.getElementById("addGroupUserNameText").value+"/user");
 usersRefSub.on('child_changed', function(data) {
-  
+
 	var nameDB = data.child("name").val();
 	//if individual already exsists need to remove old one
 	if(getRow(nameDB) != -1)
