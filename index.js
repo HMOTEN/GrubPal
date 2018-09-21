@@ -4,12 +4,8 @@ var addPersonSubmitBtn = document.getElementById("addPersonSubmitBtn");
 var addResturantText = document.getElementById("addResturantText");
 var addResturantSubmitBtn = document.getElementById("addResturantSubmitBtn");
 var resturantSelectionByUser = null;
-n =  new Date();
-y = n.getFullYear();
-m = n.getMonth() + 1;
-d = n.getDate();
-var todaysDate = m + "/" + d + "/" + y;
-document.getElementById("date").innerHTML = todaysDate;
+
+document.getElementById("date").innerHTML = getTodaysDate();
 var groupUserEmail = "";
 var userNameAuth = document.getElementById("addGroupUserNameText");
 
@@ -56,6 +52,15 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
+function getTodaysDate(){
+	n =  new Date();
+	y = n.getFullYear();
+	m = n.getMonth() + 1;
+	d = n.getDate();
+	var todaysDate = m + "/" + d + "/" + y;	
+	return todaysDate;
+}
+
 //add a person to web app
 function submitPerson(userResturantSelection){
 	var nameText = addNameText.value;	
@@ -63,7 +68,7 @@ function submitPerson(userResturantSelection){
 	usersRef.child(nameText).set({
 		name: nameText,
 		resturantName: userResturantSelection,
-		date: todaysDate
+		date: getTodaysDate()
 		
 	});
 	
@@ -217,7 +222,7 @@ usersRefSub.on('child_added', function(data) {
 	var dateDB = data.child("date").val();
 	var resturantNameDB = data.child("resturantName").val();
 	var emailDB = data.child("email").val();
-	if(dateDB == todaysDate)
+	if(dateDB == getTodaysDate())
 	{
 		
 		$("#table_body").append("<tr><td class='mdl-data-table__cell--non-numeric'>" + nameDB + "</td><td class='mdl-data-table__cell--non-numeric'>" + resturantNameDB + "</td><td><button class='mdl-button mdl-js-button mdl-button--icon' onClick = removeData('"+nameDB+"')><i class='material-icons'>delete_forever</i></button></td></tr>");
